@@ -16,7 +16,7 @@ import java.time.ZoneId
 
 @Service
 class GetExcelSheetService {
-    fun execute(file: MultipartFile, model: Model): String {
+    fun execute(file: MultipartFile): String {
         val dataList: MutableList<ExcelData> = ArrayList()
 
         val extension = FilenameUtils.getExtension(file.originalFilename)
@@ -28,15 +28,17 @@ class GetExcelSheetService {
         var workbook: Workbook? = null
 
         try {
-            if (extension == "xlsx") workbook = XSSFWorkbook(file.inputStream)
-            else if (extension == "xls") workbook = HSSFWorkbook(file.inputStream)
+            if (extension == "xlsx") {
+                workbook = XSSFWorkbook(file.inputStream)
+            } else if (extension == "xls") {
+                workbook = HSSFWorkbook(file.inputStream)
+            }
 
 
             val worksheet = workbook!!.getSheetAt(0)
 
             for (i in 1 until worksheet.physicalNumberOfRows) {
                 val row = worksheet.getRow(i)
-
                 val excelData = ExcelData(
                     name = row.getCell(0).stringCellValue,
                     entranceYear = row.getCell(1).numericCellValue.toInt(),
@@ -45,16 +47,11 @@ class GetExcelSheetService {
                     classNum = row.getCell(4).numericCellValue.toInt(),
                     num = row.getCell(5).numericCellValue.toInt()
                 )
-
-
                 dataList.add(excelData)
             }
-
-            model.addAttribute("datas", dataList)
         } finally {
             workbook?.close()
         }
-
         return "excelList"
     }
 
