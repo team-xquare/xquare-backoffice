@@ -1,5 +1,5 @@
 package com.xaquare.xquarebackoffice.global.error.exception
 
-class XquareException(
+abstract class XquareException(
 val errorCode: ErrorCode
 ) : RuntimeException()
