@@ -42,7 +42,7 @@ class CreateExcelSheetService {
         }
 
         val bodyData = arrayOf(
-            arrayOf("ex) 김도경", "ex) 2023", "ex) 2007,09,19", "ex) 2", "ex) 4", "ex) 2"),
+            arrayOf("예시) 홍길동", "예시) 2023", "예시) 2024,01,01", "예시) 1", "예시) 1", "예시) 1"),
         )
 
         bodyData.forEachIndexed { i, bodyRowData ->
@@ -56,7 +56,7 @@ class CreateExcelSheetService {
         }
 
         //file
-        val fileName = "spring_excel_download"
+        val fileName = "xquare.spreadsheetml_download"
         response.contentType = "application/xquare.spreadsheetml.sheet"
         response.setHeader("Content-Disposition", "attachment;filename=$fileName.xlsx")
         val servletOutputStream = response.outputStream
