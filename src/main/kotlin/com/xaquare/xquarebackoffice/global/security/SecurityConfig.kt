@@ -13,7 +13,7 @@ class SecurityConfig(
     private val objectMapper: ObjectMapper
 ) {
     companion object {
-        const val ADMIN_ROLE = "ADMIN"
+        const val SCHOOL = "SCH"
     }
 
     @Bean
@@ -26,7 +26,9 @@ class SecurityConfig(
 
         http.authorizeRequests()
             .requestMatchers(CorsUtils::isCorsRequest)
-            .authenticated()
+            .permitAll()
+            .antMatchers("/excel/**")
+            .hasRole(SCHOOL)
 
         http
             .apply(FilterConfig(objectMapper))

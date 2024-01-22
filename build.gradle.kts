@@ -1,52 +1,36 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "2.7.6"
-	id("io.spring.dependency-management") version "1.1.4"
-	kotlin("jvm") version "1.9.22"
-	kotlin("plugin.spring") version "1.9.22"
-	kotlin("plugin.jpa") version "1.9.22"
+	id("org.springframework.boot") version "2.7.7"
+	id("io.spring.dependency-management") version "1.0.15.RELEASE"
+	kotlin("jvm") version "1.6.21"
+	kotlin("plugin.spring") version "1.6.21"
+	kotlin("plugin.jpa") version "1.6.21"
 }
 
-group = "com.xaquare"
+group = "com.example"
 version = "0.0.1-SNAPSHOT"
-
-java {
-	sourceCompatibility = JavaVersion.VERSION_17
-}
-
-configurations {
-	compileOnly {
-		extendsFrom(configurations.annotationProcessor.get())
-	}
-}
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
 	mavenCentral()
 }
 
-extra["springCloudVersion"] = "2023.0.0"
-
 dependencies {
+	implementation("org.springframework.cloud:spring-cloud-starter-openfeign:3.1.4")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
 	compileOnly("org.projectlombok:lombok")
 	runtimeOnly("com.mysql:mysql-connector-j")
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
-	implementation("org.apache.poi', name: 'poi', version: '4.1.2")
-	implementation("org.apache.poi', name: 'poi-ooxml', version: '4.1.2")
-}
-
-dependencyManagement {
-	imports {
-		mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
-	}
+	implementation("org.apache.poi:poi:5.2.5")
+	implementation("org.apache.poi:poi-ooxml:5.2.5")
 }
 
 tasks.withType<KotlinCompile> {
