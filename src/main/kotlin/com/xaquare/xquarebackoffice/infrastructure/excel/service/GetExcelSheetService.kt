@@ -15,7 +15,7 @@ import java.time.ZoneId
 
 @Service
 class GetExcelSheetService {
-    fun execute(file: MultipartFile): String {
+    fun execute(file: MultipartFile) {
         val dataList: MutableList<ExcelData> = ArrayList()
 
         val extension = FilenameUtils.getExtension(file.originalFilename)
@@ -51,7 +51,6 @@ class GetExcelSheetService {
         } finally {
             workbook?.close()
         }
-        return "excelList"
     }
 
     private fun getLocalDateFromCell(cell: Cell): LocalDate? {
