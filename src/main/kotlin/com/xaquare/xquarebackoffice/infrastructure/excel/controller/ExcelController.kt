@@ -1,6 +1,6 @@
-package com.xaquare.xquarebackoffice.excel.controller
+package com.xaquare.xquarebackoffice.infrastructure.excel.controller
 
-import com.xaquare.xquarebackoffice.excel.service.CreateExcelSheetService
+import com.xaquare.xquarebackoffice.infrastructure.excel.service.CreateExcelSheetService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
