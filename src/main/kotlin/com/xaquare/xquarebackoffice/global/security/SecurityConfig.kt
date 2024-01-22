@@ -26,7 +26,9 @@ class SecurityConfig(
 
         http.authorizeRequests()
             .requestMatchers(CorsUtils::isCorsRequest)
-            .authenticated()
+            .permitAll()
+            .antMatchers("/excel/**")
+            .hasRole(ADMIN_ROLE)
 
         http
             .apply(FilterConfig(objectMapper))
