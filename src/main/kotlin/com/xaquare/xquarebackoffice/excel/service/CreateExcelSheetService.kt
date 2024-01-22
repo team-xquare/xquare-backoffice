@@ -19,7 +19,7 @@ class CreateExcelSheetService {
         // Header
         val headerCellStyle: CellStyle = workbook.createCellStyle().apply {
             setBorderStyle(BorderStyle.THIN)
-            fillForegroundColor = IndexedColors.GREY_80_PERCENT.index
+            fillForegroundColor = IndexedColors.BLACK1.index
             fillPattern = FillPatternType.SOLID_FOREGROUND
             setFont(workbook.createFont().apply {
                 color = IndexedColors.WHITE.index
