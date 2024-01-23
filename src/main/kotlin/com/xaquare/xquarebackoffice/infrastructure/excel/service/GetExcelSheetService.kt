@@ -40,20 +40,21 @@ class GetExcelSheetService {
                 val row = worksheet.getRow(i)
                 val excelData = ExcelData(
                     name = row.getCell(0).stringCellValue,
-                    entranceYear = row.getCell(1).numericCellValue.toInt(),
-                    birthDay = getLocalDateFromCell(row.getCell(2)) ?: LocalDate.now(),
-                    grade = row.getCell(3).numericCellValue.toInt(),
-                    classNum = row.getCell(4).numericCellValue.toInt(),
-                    num = row.getCell(5).numericCellValue.toInt()
+                    entranceYear = row.getCell(1).stringCellValue,
+                    birthDay = row.getCell(2).stringCellValue,
+                    grade = row.getCell(3).stringCellValue,
+                    classNum = row.getCell(4).stringCellValue,
+                    num = row.getCell(5).stringCellValue
                 )
                 dataList.add(excelData)
             }
         } finally {
             workbook?.close()
         }
+        TODO("type에러 고치기")
     }
-
-    private fun getLocalDateFromCell(cell: Cell): LocalDate? {
+   
+   /* private fun getLocalDateFromCell(cell: Cell): LocalDate? {
         return when (cell.cellType) {
             CellType.NUMERIC -> {
                 val date = cell.dateCellValue
@@ -62,5 +63,5 @@ class GetExcelSheetService {
             }
             else -> null
         }
-    }
+    } */
 }
