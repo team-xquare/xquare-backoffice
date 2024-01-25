@@ -2,6 +2,8 @@ package com.xaquare.xquarebackoffice.infrastructure.excel.service
 
 import com.xaquare.xquarebackoffice.infrastructure.excel.ExcelProperties
 import com.xaquare.xquarebackoffice.infrastructure.excel.dto.ExcelData
+import com.xaquare.xquarebackoffice.infrastructure.excel.exception.DBAccessException
+import com.xaquare.xquarebackoffice.infrastructure.excel.exception.DataFormatException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
@@ -95,7 +97,7 @@ class GetExcelSheetService(
             connection.commit()
         } catch (e: SQLException) {
             connection?.rollback()
-            throw e
+            throw DBAccessException
         } finally {
             preparedSql?.close()
             connection?.close()
@@ -107,8 +109,7 @@ class GetExcelSheetService(
         return try {
             LocalDate.parse(dateString, format)
         } catch (e: Exception) {
-            null
-            //입력 형태 오류
+            throw DataFormatException
         }
     }
 }
