@@ -4,6 +4,7 @@ import com.xaquare.xquarebackoffice.infrastructure.excel.ExcelProperties
 import com.xaquare.xquarebackoffice.infrastructure.excel.dto.ExcelData
 import com.xaquare.xquarebackoffice.infrastructure.excel.exception.DBAccessException
 import com.xaquare.xquarebackoffice.infrastructure.excel.exception.DataFormatException
+import com.xaquare.xquarebackoffice.infrastructure.excel.service.query.ExcelQuery
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
@@ -11,17 +12,17 @@ import org.apache.commons.io.FilenameUtils
 import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
-import java.sql.Connection
-import java.sql.DriverManager
-import java.sql.PreparedStatement
-import java.sql.SQLException
+import java.sql.*
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+
 @Service
 class GetExcelSheetService(
-    private val properties: ExcelProperties
+    private val properties: ExcelProperties,
+    private val excelQuery: ExcelQuery
 ) {
+
     @Transactional
     fun execute(file: MultipartFile) {
         val dataList: MutableList<ExcelData> = ArrayList()
@@ -74,11 +75,8 @@ class GetExcelSheetService(
             connection = DriverManager.getConnection(jdbcUrl, username, password)
             connection.autoCommit = false
 
-            val sql = """
-                INSERT INTO excel (name, entrance_year, birth_day, grade, class_num, num)
-                VALUES (?, ?, ?, ?, ?, ?)
-            """
-
+            val sql = excelQuery.executeQuery()
+            
             preparedSql = connection.prepareStatement(sql)
 
             preparedSql.apply {
