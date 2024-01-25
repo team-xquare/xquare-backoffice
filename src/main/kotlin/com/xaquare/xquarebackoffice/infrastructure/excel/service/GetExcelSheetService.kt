@@ -43,19 +43,19 @@ class GetExcelSheetService(
             TODO("예외처리")
         }
 
-        var workbook: Workbook? = null
+        var excel: Workbook? = null
 
         try {
             if (extension == "xlsx") {
-                workbook = XSSFWorkbook(file.inputStream)
+                excel = XSSFWorkbook(file.inputStream)
             } else if (extension == "xls") {
-                workbook = HSSFWorkbook(file.inputStream)
+                excel = HSSFWorkbook(file.inputStream)
             }
 
-            val worksheet = workbook!!.getSheetAt(0)
+            val firstSheet = excel!!.getSheetAt(0)
 
-            for (i in 2 until worksheet.physicalNumberOfRows) {
-                val row = worksheet.getRow(i)
+            for (i in 2 until firstSheet.physicalNumberOfRows) {
+                val row = firstSheet.getRow(i)
                 val cellType1 = row.getCell(1).cellType
                 val cellType3 = row.getCell(3).cellType
                 val cellType4 = row.getCell(4).cellType
@@ -90,7 +90,7 @@ class GetExcelSheetService(
             }
             saveExcelDataToDB(dataList)
         } finally {
-            workbook?.close()
+            excel?.close()
         }
     }
 
@@ -100,7 +100,7 @@ class GetExcelSheetService(
         val password = password
 
         var connection: Connection? = null
-        var preparedStatement: PreparedStatement? = null
+        var preparedSql: PreparedStatement? = null
 
         try {
             connection = DriverManager.getConnection(jdbcUrl, username, password)
@@ -109,27 +109,29 @@ class GetExcelSheetService(
             val sql = """
                 INSERT INTO excel (name, entrance_year, birth_day, grade, class_num, num)
                 VALUES (?, ?, ?, ?, ?, ?)
-            """.trimIndent()
+            """
 
-            preparedStatement = connection.prepareStatement(sql)
+            preparedSql = connection.prepareStatement(sql)
 
-            for (excelData in dataList) {
-                preparedStatement.setString(1, excelData.name)
-                preparedStatement.setString(2, excelData.entranceYear)
-                preparedStatement.setString(3, excelData.birthDay)
-                preparedStatement.setString(4, excelData.grade)
-                preparedStatement.setString(5, excelData.classNum)
-                preparedStatement.setString(6, excelData.num)
-                preparedStatement.addBatch()
+            preparedSql.apply {
+                for (excelData in dataList) {
+                    setString(1, excelData.name)
+                    setString(2, excelData.entranceYear)
+                    setString(3, excelData.birthDay)
+                    setString(4, excelData.grade)
+                    setString(5, excelData.classNum)
+                    setString(6, excelData.num)
+                    addBatch()
+                }
             }
 
-            preparedStatement.executeBatch()
+            preparedSql.executeBatch()
             connection.commit()
         } catch (e: SQLException) {
             connection?.rollback()
             throw e
         } finally {
-            preparedStatement?.close()
+            preparedSql?.close()
             connection?.close()
         }
     }
