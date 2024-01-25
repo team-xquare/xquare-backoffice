@@ -1,15 +1,14 @@
 package com.xaquare.xquarebackoffice.infrastructure.excel.service
 
+import com.xaquare.xquarebackoffice.infrastructure.excel.ExcelProperties
 import com.xaquare.xquarebackoffice.infrastructure.excel.dto.ExcelData
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 import org.apache.commons.io.FilenameUtils
-import org.apache.poi.ss.usermodel.CellType
 import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
-import org.springframework.beans.factory.annotation.Value
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.PreparedStatement
@@ -19,20 +18,8 @@ import java.time.format.DateTimeFormatter
 
 @Service
 class GetExcelSheetService(
-    @Value("\${service.scheme}")
-    private val scheme: String,
-    @Value("\${service.host}")
-    private val host: String,
-    @Value("\${service.port}")
-    private val port: Int,
-    @Value("\${service.database}")
-    private val database: String,
-    @Value("\${service.username}")
-    private val username: String,
-    @Value("\${service.password}")
-    private val password: String
+    private val properties: ExcelProperties
 ) {
-
     @Transactional
     fun execute(file: MultipartFile) {
         val dataList: MutableList<ExcelData> = ArrayList()
@@ -74,9 +61,9 @@ class GetExcelSheetService(
     }
 
     private fun saveExcelDataToDB(dataList: List<ExcelData>) {
-        val jdbcUrl = "${scheme}://${host}:${port}/${database}"
-        val username = username
-        val password = password
+        val jdbcUrl = "${properties.scheme}://${properties.host}:${properties.port}/${properties.database}"
+        val username = properties.username
+        val password = properties.password
 
         var connection: Connection? = null
         var preparedSql: PreparedStatement? = null
