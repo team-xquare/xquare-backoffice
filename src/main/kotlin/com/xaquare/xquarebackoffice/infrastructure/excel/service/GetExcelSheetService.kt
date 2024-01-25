@@ -56,35 +56,14 @@ class GetExcelSheetService(
 
             for (i in 2 until firstSheet.physicalNumberOfRows) {
                 val row = firstSheet.getRow(i)
-                val cellType1 = row.getCell(1).cellType
-                val cellType3 = row.getCell(3).cellType
-                val cellType4 = row.getCell(4).cellType
-                val cellType5 = row.getCell(5).cellType
-
 
                 val excelData = ExcelData(
                     name = row.getCell(0).stringCellValue.toString(),
-                    entranceYear = when (cellType1) {
-                        CellType.STRING -> row.getCell(1).stringCellValue
-                        CellType.NUMERIC -> row.getCell(1).numericCellValue.toInt().toString()
-                        else -> null
-                    }?: "",
+                    entranceYear = row.getCell(1).numericCellValue.toInt().toString(),
                     birthDay = getLocalDateFromString(row.getCell(2).toString())?.toString() ?: "",
-                    grade = when (cellType3) {
-                        CellType.STRING -> row.getCell(3).stringCellValue
-                        CellType.NUMERIC -> row.getCell(3).numericCellValue.toInt().toString()
-                        else -> null
-                    } ?:"",
-                    classNum = when (cellType4) {
-                        CellType.STRING -> row.getCell(4).stringCellValue
-                        CellType.NUMERIC -> row.getCell(4).numericCellValue.toInt().toString()
-                        else -> null
-                    } ?:"",
-                    num = when (cellType5) {
-                        CellType.STRING -> row.getCell(5).stringCellValue
-                        CellType.NUMERIC -> row.getCell(5).numericCellValue.toInt().toString()
-                        else -> null
-                    } ?:"",
+                    grade = row.getCell(3).numericCellValue.toInt().toString(),
+                    classNum = row.getCell(4).numericCellValue.toInt().toString(),
+                    num = row.getCell(5).numericCellValue.toInt().toString(),
                 )
                 dataList.add(excelData)
             }
