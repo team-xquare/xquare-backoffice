@@ -49,11 +49,11 @@ class GetExcelSheetService(
 
                 val excelData = ExcelData(
                     name = row.getCell(0).stringCellValue.toString(),
-                    entranceYear = row.getCell(1).numericCellValue.toInt().toString(),
+                    entranceYear = row.getCell(1).numericCellValue.toInt(),
                     birthDay = getLocalDateFromString(row.getCell(2).toString())?.toString() ?: "",
-                    grade = row.getCell(3).numericCellValue.toInt().toString(),
-                    classNum = row.getCell(4).numericCellValue.toInt().toString(),
-                    num = row.getCell(5).numericCellValue.toInt().toString(),
+                    grade = row.getCell(3).numericCellValue.toInt(),
+                    classNum = row.getCell(4).numericCellValue.toInt(),
+                    num = row.getCell(5).numericCellValue.toInt(),
                 )
                 dataList.add(excelData)
             }
@@ -76,17 +76,17 @@ class GetExcelSheetService(
             connection.autoCommit = false
 
             val sql = excelQuery.executeQuery()
-            
+
             preparedSql = connection.prepareStatement(sql)
 
             preparedSql.apply {
                 for (excelData in dataList) {
                     setString(1, excelData.name)
-                    setString(2, excelData.entranceYear)
+                    setInt(2, excelData.entranceYear)
                     setString(3, excelData.birthDay)
-                    setString(4, excelData.grade)
-                    setString(5, excelData.classNum)
-                    setString(6, excelData.num)
+                    setInt(4, excelData.grade)
+                    setInt(5, excelData.classNum)
+                    setInt(6, excelData.num)
                     addBatch()
                 }
             }
