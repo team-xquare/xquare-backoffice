@@ -10,4 +10,10 @@ class ExcelQuery {
             VALUES (?, ?, ?, ?, ?, ?)
         """
     }
+
+    fun selectQuery(): String {
+        return """
+            SELECT * FROM
+        """.trimIndent()
+    }
 }
