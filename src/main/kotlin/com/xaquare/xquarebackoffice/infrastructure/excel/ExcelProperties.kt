@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConstructorBinding
 
 @ConstructorBinding
-@ConfigurationProperties("excel")
+@ConfigurationProperties("service")
 class ExcelProperties (
      val scheme: String,
      val host: String,
