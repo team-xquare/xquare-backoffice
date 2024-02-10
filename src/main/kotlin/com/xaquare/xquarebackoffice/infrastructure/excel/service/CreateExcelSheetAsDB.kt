@@ -18,7 +18,7 @@ class CreateExcelSheetAsDB(
     private val query: ExcelQuery
 
 ) {
-    fun excute(response: HttpServletResponse) {
+    fun execute(response: HttpServletResponse) {
 
         val workbook: Workbook = XSSFWorkbook()
         val sheet: Sheet = workbook.createSheet("xquare_userInfo").apply {

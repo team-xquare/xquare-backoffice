@@ -28,5 +28,5 @@ class ExcelController(
 
     @GetMapping("/userInfo")
     fun createExcelSheetAsDD(httpServletResponse: HttpServletResponse) =
-        createExcelSheetAsDB.excute(httpServletResponse)
+        createExcelSheetAsDB.execute(httpServletResponse)
 }
