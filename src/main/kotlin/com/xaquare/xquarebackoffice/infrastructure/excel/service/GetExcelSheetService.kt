@@ -6,7 +6,6 @@ import com.xaquare.xquarebackoffice.infrastructure.excel.exception.DBAccessExcep
 import com.xaquare.xquarebackoffice.infrastructure.excel.exception.DataFormatException
 import com.xaquare.xquarebackoffice.infrastructure.excel.service.query.ExcelQuery
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 import org.apache.commons.io.FilenameUtils
 import org.apache.poi.ss.usermodel.Workbook
@@ -23,7 +22,6 @@ class GetExcelSheetService(
     private val excelQuery: ExcelQuery
 ) {
 
-    @Transactional
     fun execute(file: MultipartFile) {
         val dataList: MutableList<ExcelData> = ArrayList()
 
