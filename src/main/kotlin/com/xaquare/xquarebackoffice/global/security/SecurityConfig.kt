@@ -30,9 +30,6 @@ class SecurityConfig(
             .antMatchers("/excel/**")
             .hasRole(SCHOOL)
 
-        http
-            .apply(FilterConfig(objectMapper))
-
         return http.build()
     }
 }
