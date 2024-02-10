@@ -1,4 +1,4 @@
-name: gradle-pick
+name: gradle-backoffice
 
 on:
     push:
