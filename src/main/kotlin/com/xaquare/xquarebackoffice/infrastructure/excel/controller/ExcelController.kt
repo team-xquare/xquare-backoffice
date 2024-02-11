@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 import javax.servlet.http.HttpServletResponse
+import org.springframework.web.bind.annotation.RequestParam
 
 @RestController
 @RequestMapping("/excel")
@@ -23,10 +24,10 @@ class ExcelController(
         createExcelSheetService.execute(httpServletResponse)
 
     @PostMapping
-    fun saveExcelInfo(file: MultipartFile) =
-        getExcelSheetService.execute(file)
+    fun saveExcelInfo(@RequestParam(name = "scheme")scheme: String, @RequestParam(name = "host")host: String, @RequestParam(name = "port")port: Int, @RequestParam(name = "database")database: String, @RequestParam(name = "username")username: String, @RequestParam(name = "password")password: String, file: MultipartFile) =
+        getExcelSheetService.execute(scheme, host, port, database, username, password, file)
 
     @GetMapping("/userInfo")
-    fun createExcelSheetAsDD(httpServletResponse: HttpServletResponse) =
-        createExcelSheetAsDB.execute(httpServletResponse)
+    fun createExcelSheetAsDD(@RequestParam(name = "scheme")scheme: String, @RequestParam(name = "host")host: String, @RequestParam(name = "port")port: Int, @RequestParam(name = "database")database: String, @RequestParam(name = "username")username: String, @RequestParam(name = "password")password: String, httpServletResponse: HttpServletResponse) =
+        createExcelSheetAsDB.execute(scheme, host, port, database, username, password, httpServletResponse)
 }

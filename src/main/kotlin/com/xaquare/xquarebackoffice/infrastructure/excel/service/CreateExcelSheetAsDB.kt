@@ -1,6 +1,5 @@
 package com.xaquare.xquarebackoffice.infrastructure.excel.service
 
-import com.xaquare.xquarebackoffice.infrastructure.excel.ExcelProperties
 import com.xaquare.xquarebackoffice.infrastructure.excel.dto.ExcelData
 import com.xaquare.xquarebackoffice.infrastructure.excel.service.query.ExcelQuery
 import org.apache.poi.ss.usermodel.*
@@ -14,11 +13,9 @@ import javax.servlet.http.HttpServletResponse
 
 @Service
 class CreateExcelSheetAsDB(
-    private val properties: ExcelProperties,
     private val query: ExcelQuery
-
 ) {
-    fun execute(response: HttpServletResponse) {
+    fun execute(scheme: String, host: String, port: Int, database: String, username: String, password: String, response: HttpServletResponse) {
 
         val workbook: Workbook = XSSFWorkbook()
         val sheet: Sheet = workbook.createSheet("xquare_userInfo").apply {
@@ -64,16 +61,16 @@ class CreateExcelSheetAsDB(
         }
 
         val dataList: MutableList<ExcelData> = ArrayList()
-        val jdbcUrl = "jdbc:mysql://${properties.host}:${properties.port}/${properties.database}"
-        val username = properties.username
-        val password = properties.password
+        val jdbcUrl = "jdbc:mysql://$host:$port/$database"
+        val username = username
+        val password = password
 
         var connection: Connection? = null
 
         try {
             connection = DriverManager.getConnection(jdbcUrl, username, password)
 
-            val query = "${query.selectQuery()} ${properties.database}"
+            val query = "${query.selectQuery()} $database"
             val statement = connection.createStatement()
             val sqlResult = statement.executeQuery(query)
 

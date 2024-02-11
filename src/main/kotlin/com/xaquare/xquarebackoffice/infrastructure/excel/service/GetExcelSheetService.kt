@@ -1,6 +1,5 @@
 package com.xaquare.xquarebackoffice.infrastructure.excel.service
 
-import com.xaquare.xquarebackoffice.infrastructure.excel.ExcelProperties
 import com.xaquare.xquarebackoffice.infrastructure.excel.dto.ExcelData
 import com.xaquare.xquarebackoffice.infrastructure.excel.exception.DBAccessException
 import com.xaquare.xquarebackoffice.infrastructure.excel.exception.DataFormatException
@@ -18,11 +17,10 @@ import java.time.format.DateTimeFormatter
 
 @Service
 class GetExcelSheetService(
-    private val properties: ExcelProperties,
     private val excelQuery: ExcelQuery
 ) {
 
-    fun execute(file: MultipartFile) {
+    fun execute(scheme: String, host: String, port: Int, database: String, username: String, password: String, file: MultipartFile) {
         val dataList: MutableList<ExcelData> = ArrayList()
 
         val extension = FilenameUtils.getExtension(file.originalFilename)
@@ -55,16 +53,14 @@ class GetExcelSheetService(
                 )
                 dataList.add(excelData)
             }
-            saveExcelDataToDB(dataList)
+            saveExcelDataToDB(scheme, host, port, database, username, password, dataList)
         } finally {
             excel?.close()
         }
     }
 
-    private fun saveExcelDataToDB(dataList: List<ExcelData>) {
-        val jdbcUrl = "${properties.scheme}://${properties.host}:${properties.port}/${properties.database}"
-        val username = properties.username
-        val password = properties.password
+    private fun saveExcelDataToDB(scheme: String, host: String, port: Int, database: String, username: String, password: String, dataList: List<ExcelData>) {
+        val jdbcUrl = "$scheme://$host:$port/$database"
 
         var connection: Connection? = null
         var preparedSql: PreparedStatement? = null
