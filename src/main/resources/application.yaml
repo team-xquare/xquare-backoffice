@@ -1,11 +1,3 @@
 server:
   servlet:
     context-path: /dsm-backoffice
-
-service:
-  database:
-  username:
-  password:
-  scheme:
-  host:
-  port:
