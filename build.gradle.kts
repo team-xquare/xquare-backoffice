@@ -17,6 +17,8 @@ repositories {
 }
 
 dependencies {
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("mysql:mysql-connector-java:8.0.23")
 	implementation("org.springframework.cloud:spring-cloud-starter-openfeign:3.1.4")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
