@@ -1,27 +1,33 @@
 package com.xaquare.xquarebackoffice.infrastructure.excel.service
 
-import com.xaquare.xquarebackoffice.infrastructure.excel.dto.ExcelData
-import com.xaquare.xquarebackoffice.infrastructure.excel.service.query.ExcelQuery
-import org.apache.poi.ss.usermodel.*
+import com.xaquare.xquarebackoffice.domain.entity.User
+import com.xaquare.xquarebackoffice.domain.persistence.UserPersistenceAdapter
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.springframework.stereotype.Service
-import java.sql.Connection
-import java.sql.DriverManager
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import javax.servlet.http.HttpServletResponse
+import org.apache.poi.ss.usermodel.BorderStyle
+import org.apache.poi.ss.usermodel.Cell
+import org.apache.poi.ss.usermodel.CellStyle
+import org.apache.poi.ss.usermodel.FillPatternType
+import org.apache.poi.ss.usermodel.IndexedColors
+import org.apache.poi.ss.usermodel.Row
+import org.apache.poi.ss.usermodel.Sheet
+import org.apache.poi.ss.usermodel.Workbook
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class CreateExcelSheetAsDB(
-    private val query: ExcelQuery
+    private val userPersistenceAdapter: UserPersistenceAdapter
 ) {
-    fun execute(scheme: String, host: String, port: Int, database: String, username: String, password: String, response: HttpServletResponse) {
 
+    @Transactional(readOnly = true)
+    fun execute(response: HttpServletResponse) {
         val workbook: Workbook = XSSFWorkbook()
         val sheet: Sheet = workbook.createSheet("xquare_userInfo").apply {
             defaultColumnWidth = 30
         }
 
+        // Header
         val headerCellStyle: CellStyle = workbook.createCellStyle().apply {
             setBorderStyle(BorderStyle.THIN)
             fillForegroundColor = IndexedColors.BLACK1.index
@@ -31,7 +37,7 @@ class CreateExcelSheetAsDB(
             })
         }
 
-        val headerNames = arrayOf("이름", "입학년도", "생일", "학년", "반", "번호")
+        val headerNames = arrayOf("이름", "아이디", "비밀번호", "학년", "반", "번호", "프로필사진")
 
         val headerRow: Row = sheet.createRow(0)
         headerNames.forEachIndexed { i, header ->
@@ -41,72 +47,28 @@ class CreateExcelSheetAsDB(
             }
         }
 
-        //Body
+        // Body
         val bodyCellStyle: CellStyle = workbook.createCellStyle().apply {
             setBorderStyle(BorderStyle.THIN)
         }
 
-        val bodyData = arrayOf(
-            arrayOf("예시) 홍길동", "예시) 2023", "예시) 2024,01,01", "예시) 1", "예시) 1", "예시) 1"),
-        )
+        val userList: List<User> = userPersistenceAdapter.findAll()
 
-        bodyData.forEachIndexed { i, bodyRowData ->
-            val bodyRow: Row = sheet.createRow(i + 1)
-            bodyRowData.forEachIndexed { j, data ->
-                val bodyCell: Cell = bodyRow.createCell(j).apply {
-                    setCellValue(data)
-                    cellStyle = bodyCellStyle
-                }
-            }
-        }
-
-        val dataList: MutableList<ExcelData> = ArrayList()
-        val jdbcUrl = "jdbc:mysql://$host:$port/$database"
-        val username = username
-        val password = password
-
-        var connection: Connection? = null
-
-        try {
-            connection = DriverManager.getConnection(jdbcUrl, username, password)
-
-            val query = "${query.selectQuery()} $database"
-            val statement = connection.createStatement()
-            val sqlResult = statement.executeQuery(query)
-
-            while (sqlResult.next()) {
-                val data = ExcelData(
-                    name = sqlResult.getString("name"),
-                    entranceYear = sqlResult.getInt("entrance_year"),
-                    birthDay = sqlResult.getString("birth_day"),
-                    grade = sqlResult.getInt("grade"),
-                    classNum = sqlResult.getInt("class_num"),
-                    num = sqlResult.getInt("num")
-                )
-                dataList.add(data)
-            }
-        } finally {
-            connection?.close()
-        }
-
-        dataList.forEachIndexed { i, data ->
-            val row: Row = sheet.createRow(i + 2).apply {
-                createCell(0).setCellValue(data.name)
-                createCell(1).setCellValue((data.entranceYear).toDouble())
-                createCell(2).setCellValue(formatBirthday(data.birthDay))
-                createCell(3).setCellValue((data.grade).toDouble())
-                createCell(4).setCellValue((data.classNum).toDouble())
-                createCell(5).setCellValue((data.num).toDouble())
-                forEach { cell ->
-                    cell.cellStyle = bodyCellStyle
-                }
-            }
-
-            row.forEach { cell ->
+        userList.forEachIndexed { index, user ->
+            val bodyRow: Row = sheet.createRow(index + 1)
+            bodyRow.createCell(0).setCellValue(user.name)
+            bodyRow.createCell(1).setCellValue(user.accountId)
+            bodyRow.createCell(2).setCellValue(user.password)
+            bodyRow.createCell(3).setCellValue(user.grade.toDouble())
+            bodyRow.createCell(4).setCellValue(user.classNum.toDouble())
+            bodyRow.createCell(5).setCellValue(user.num.toDouble())
+            bodyRow.createCell(6).setCellValue(user.profile)
+            bodyRow.forEach { cell ->
                 cell.cellStyle = bodyCellStyle
             }
         }
 
+        // File
         val fileName = "xquare_userInfo.spreadsheetml_download"
         response.contentType = "application/xquare_userInfo.spreadsheetml.sheet"
         response.setHeader("Content-Disposition", "attachment;filename=$fileName.xlsx")
@@ -123,10 +85,5 @@ class CreateExcelSheetAsDB(
         borderRight = style
         borderTop = style
         borderBottom = style
-    }
-
-    private fun formatBirthday(birthday: String): String {
-        val originalString = LocalDate.parse(birthday, DateTimeFormatter.ISO_DATE)
-        return originalString.format(DateTimeFormatter.ofPattern("yyyy,MM,dd"))
     }
 }
