@@ -1,6 +1,6 @@
 package com.xaquare.xquarebackoffice.domain.entity
 
-import com.xaquare.xquarebackoffice.infrastructure.user.BaseUUIDEntity
+import com.xaquare.xquarebackoffice.global.base.BaseUUIDEntity
 import java.util.UUID
 import javax.persistence.Column
 import javax.persistence.Entity
