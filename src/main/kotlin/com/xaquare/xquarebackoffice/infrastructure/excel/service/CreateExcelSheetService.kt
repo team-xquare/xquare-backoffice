@@ -21,9 +21,11 @@ class CreateExcelSheetService {
             setBorderStyle(BorderStyle.THIN)
             fillForegroundColor = IndexedColors.BLACK1.index
             fillPattern = FillPatternType.SOLID_FOREGROUND
-            setFont(workbook.createFont().apply {
-                color = IndexedColors.WHITE.index
-            })
+            setFont(
+                workbook.createFont().apply {
+                    color = IndexedColors.WHITE.index
+                }
+            )
         }
 
         val headerNames = arrayOf("이름", "입학년도", "생일", "학년", "반", "번호")
@@ -42,7 +44,7 @@ class CreateExcelSheetService {
         }
 
         val bodyData = arrayOf(
-            arrayOf("예시) 홍길동", "예시) 2023", "예시) 2024,01,01", "예시) 1", "예시) 1", "예시) 1"),
+            arrayOf("예시) 홍길동", "예시) 2023", "예시) 2024,01,01", "예시) 1", "예시) 1", "예시) 1")
         )
 
         bodyData.forEachIndexed { i, bodyRowData ->

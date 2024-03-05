@@ -32,9 +32,11 @@ class CreateExcelSheetAsDB(
             setBorderStyle(BorderStyle.THIN)
             fillForegroundColor = IndexedColors.BLACK1.index
             fillPattern = FillPatternType.SOLID_FOREGROUND
-            setFont(workbook.createFont().apply {
-                color = IndexedColors.WHITE.index
-            })
+            setFont(
+                workbook.createFont().apply {
+                    color = IndexedColors.WHITE.index
+                }
+            )
         }
 
         val headerNames = arrayOf("이름", "아이디", "비밀번호", "학년", "반", "번호", "프로필사진")

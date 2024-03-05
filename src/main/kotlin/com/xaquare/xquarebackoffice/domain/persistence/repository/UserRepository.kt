@@ -4,4 +4,4 @@ import com.xaquare.xquarebackoffice.domain.entity.User
 import java.util.UUID
 import org.springframework.data.jpa.repository.JpaRepository
 
-interface UserRepository: JpaRepository<User, UUID>
+interface UserRepository : JpaRepository<User, UUID>

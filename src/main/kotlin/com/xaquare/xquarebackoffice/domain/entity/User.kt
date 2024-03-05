@@ -6,27 +6,27 @@ import javax.persistence.Column
 import javax.persistence.Entity
 
 @Entity
-class User (
-        id: UUID? = null,
+class User(
+    id: UUID? = null,
 
-        @Column(name = "name", nullable = false)
-        val name: String,
+    @Column(name = "name", nullable = false)
+    val name: String,
 
-        @Column(name = "account_id", nullable = false, unique = true)
-        val accountId: String,
+    @Column(name = "account_id", nullable = false, unique = true)
+    val accountId: String,
 
-        @Column(name = "password", nullable = false)
-        val password: String,
+    @Column(name = "password", nullable = false)
+    val password: String,
 
-        @Column(name = "grade", nullable = false)
-        val grade: Int,
+    @Column(name = "grade", nullable = false)
+    val grade: Int,
 
-        @Column(name = "class_num", nullable = false)
-        val classNum: Int,
+    @Column(name = "class_num", nullable = false)
+    val classNum: Int,
 
-        @Column(name = "num", nullable = false)
-        val num: Int,
+    @Column(name = "num", nullable = false)
+    val num: Int,
 
-        @Column(name = "profile_file")
-        val profile: String ? = null,
+    @Column(name = "profile_file")
+    val profile: String ? = null
 ) : BaseUUIDEntity(id)

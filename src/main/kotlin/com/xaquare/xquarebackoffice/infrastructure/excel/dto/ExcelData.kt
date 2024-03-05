@@ -1,6 +1,6 @@
 package com.xaquare.xquarebackoffice.infrastructure.excel.dto
 
-data class ExcelData (
+data class ExcelData(
     val name: String,
     val entranceYear: Int,
     val birthDay: String,

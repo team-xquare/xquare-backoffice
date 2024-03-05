@@ -9,5 +9,5 @@ import org.springframework.boot.runApplication
 class XquareBackofficeApplication
 
 fun main(args: Array<String>) {
-	runApplication<XquareBackofficeApplication>(*args)
+    runApplication<XquareBackofficeApplication>(*args)
 }
