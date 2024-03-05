@@ -1,7 +1,7 @@
 package com.xaquare.xquarebackoffice.infrastructure.excel.controller
 
-import com.xaquare.xquarebackoffice.infrastructure.excel.service.CreateExcelSheetAsDB
-import com.xaquare.xquarebackoffice.infrastructure.excel.service.CreateExcelSheetService
+import com.xaquare.xquarebackoffice.infrastructure.excel.service.GetUserInfo
+import com.xaquare.xquarebackoffice.infrastructure.excel.service.SaveUserInfo
 import com.xaquare.xquarebackoffice.infrastructure.excel.service.GetExcelSheetService
 
 import org.springframework.web.bind.annotation.GetMapping
@@ -14,19 +14,21 @@ import javax.servlet.http.HttpServletResponse
 @RestController
 @RequestMapping("/excel")
 class ExcelController(
-    private val createExcelSheetService: CreateExcelSheetService,
+    private val saveUserInfo: SaveUserInfo,
     private val getExcelSheetService: GetExcelSheetService,
-    private val createExcelSheetAsDB: CreateExcelSheetAsDB
+    private val getUserInfo: GetUserInfo
 ) {
     @GetMapping
     fun createExcelSheet(httpServletResponse: HttpServletResponse) =
-        createExcelSheetService.execute(httpServletResponse)
+        saveUserInfo.execute(httpServletResponse)
 
     @PostMapping
     fun saveExcelInfo(file: MultipartFile) =
         getExcelSheetService.execute(file)
 
     @GetMapping("/userInfo")
-    fun createExcelSheetAsDD(httpServletResponse: HttpServletResponse) =
-        createExcelSheetAsDB.execute(httpServletResponse)
+    fun getUserInfo(httpServletResponse: HttpServletResponse) =
+        getUserInfo.execute(httpServletResponse)
+
+
 }
