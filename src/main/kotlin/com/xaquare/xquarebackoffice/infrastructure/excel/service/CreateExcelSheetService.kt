@@ -1,11 +1,16 @@
 package com.xaquare.xquarebackoffice.infrastructure.excel.service
 
 import org.springframework.stereotype.Service
-import org.apache.poi.ss.usermodel.*
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.apache.poi.ss.usermodel.FillPatternType
 import org.apache.poi.ss.usermodel.IndexedColors
 import javax.servlet.http.HttpServletResponse
+import org.apache.poi.ss.usermodel.BorderStyle
+import org.apache.poi.ss.usermodel.Cell
+import org.apache.poi.ss.usermodel.CellStyle
+import org.apache.poi.ss.usermodel.Row
+import org.apache.poi.ss.usermodel.Sheet
+import org.apache.poi.ss.usermodel.Workbook
 
 @Service
 class CreateExcelSheetService {
@@ -28,7 +33,7 @@ class CreateExcelSheetService {
             )
         }
 
-        val headerNames = arrayOf("이름", "입학년도", "생일", "학년", "반", "번호")
+        val headerNames = arrayOf("이름", "아이디", "비밀번호", "학년", "반", "번호", "프로필 사진")
 
         val headerRow: Row = sheet.createRow(0)
         headerNames.forEachIndexed { i, header ->
@@ -44,7 +49,7 @@ class CreateExcelSheetService {
         }
 
         val bodyData = arrayOf(
-            arrayOf("예시) 홍길동", "예시) 2023", "예시) 2024,01,01", "예시) 1", "예시) 1", "예시) 1")
+            arrayOf("예시) 홍길동", "예시) gildong", "예시) Gildong1!", "예시) 1", "예시) 1", "예시) 1", "예시) http:// "),
         )
 
         bodyData.forEachIndexed { i, bodyRowData ->
@@ -57,7 +62,7 @@ class CreateExcelSheetService {
             }
         }
 
-        //file
+        // File
         val fileName = "xquare.spreadsheetml_download"
         response.contentType = "application/xquare.spreadsheetml.sheet"
         response.setHeader("Content-Disposition", "attachment;filename=$fileName.xlsx")
