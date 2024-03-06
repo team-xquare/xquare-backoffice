@@ -44,7 +44,7 @@ class GetExcelSheetService(
                     grade = row.getCell(3).numericCellValue.toInt(),
                     classNum = row.getCell(4).numericCellValue.toInt(),
                     num = row.getCell(5).numericCellValue.toInt(),
-                    profile = row.getCell(6).stringCellValue.toString() ?: ""
+                    profile = row.getCell(6).stringCellValue.toString()
                 )
                 dataList.add(userData)
             }

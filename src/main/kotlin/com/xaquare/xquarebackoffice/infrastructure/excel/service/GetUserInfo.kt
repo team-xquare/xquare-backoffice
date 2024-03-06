@@ -43,7 +43,7 @@ class GetUserInfo(
 
         val headerRow: Row = sheet.createRow(0)
         headerNames.forEachIndexed { i, header ->
-            val headerCell: Cell = headerRow.createCell(i).apply {
+            headerRow.createCell(i).apply {
                 setCellValue(header)
                 cellStyle = headerCellStyle
             }
