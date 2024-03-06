@@ -29,6 +29,4 @@ class ExcelController(
     @GetMapping("/userInfo")
     fun getUserInfo(httpServletResponse: HttpServletResponse) =
         getUserInfo.execute(httpServletResponse)
-
-
 }

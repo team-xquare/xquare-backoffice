@@ -49,7 +49,7 @@ class SaveUserInfo {
         }
 
         val bodyData = arrayOf(
-            arrayOf("예시) 홍길동", "예시) gildong", "예시) Gildong1!", "예시) 1", "예시) 1", "예시) 1", "예시) http:// "),
+            arrayOf("예시) 홍길동", "예시) gildong", "예시) Gildong1!", "예시) 1", "예시) 1", "예시) 1", "예시) http:// ")
         )
 
         bodyData.forEachIndexed { i, bodyRowData ->
