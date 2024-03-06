@@ -22,7 +22,7 @@ class ExcelController(
     private val getUserInfo: GetUserInfo,
     private val findUserByAccountIdService: FindUserByAccountIdService,
     private val findAllUserService: FindAllUserService
-    ) {
+) {
     @GetMapping
     fun createExcelSheet(httpServletResponse: HttpServletResponse) =
         saveUserInfo.execute(httpServletResponse)
@@ -41,5 +41,4 @@ class ExcelController(
 
     @GetMapping("/find/all")
     fun findAllUser() = findAllUserService.execute()
-
 }
