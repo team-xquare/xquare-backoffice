@@ -11,4 +11,8 @@ class UserPersistenceAdapter(
     fun findAll(): List<User> {
         return userRepository.findAll()
     }
+
+    fun findUserByAccountId(accountId: String): User? {
+        return userRepository.findUserByAccountId(accountId)
+    }
 }
