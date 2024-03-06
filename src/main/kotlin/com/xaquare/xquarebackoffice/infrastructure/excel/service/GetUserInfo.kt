@@ -6,7 +6,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.springframework.stereotype.Service
 import javax.servlet.http.HttpServletResponse
 import org.apache.poi.ss.usermodel.BorderStyle
-import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.CellStyle
 import org.apache.poi.ss.usermodel.FillPatternType
 import org.apache.poi.ss.usermodel.IndexedColors
@@ -43,7 +42,7 @@ class GetUserInfo(
 
         val headerRow: Row = sheet.createRow(0)
         headerNames.forEachIndexed { i, header ->
-            val headerCell: Cell = headerRow.createCell(i).apply {
+            headerRow.createCell(i).apply {
                 setCellValue(header)
                 cellStyle = headerCellStyle
             }

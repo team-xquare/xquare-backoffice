@@ -6,7 +6,6 @@ import org.apache.poi.ss.usermodel.FillPatternType
 import org.apache.poi.ss.usermodel.IndexedColors
 import javax.servlet.http.HttpServletResponse
 import org.apache.poi.ss.usermodel.BorderStyle
-import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.CellStyle
 import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Sheet
@@ -37,7 +36,7 @@ class SaveUserInfo {
 
         val headerRow: Row = sheet.createRow(0)
         headerNames.forEachIndexed { i, header ->
-            val headerCell: Cell = headerRow.createCell(i).apply {
+            headerRow.createCell(i).apply {
                 setCellValue(header)
                 cellStyle = headerCellStyle
             }
@@ -55,7 +54,7 @@ class SaveUserInfo {
         bodyData.forEachIndexed { i, bodyRowData ->
             val bodyRow: Row = sheet.createRow(i + 1)
             bodyRowData.forEachIndexed { j, data ->
-                val bodyCell: Cell = bodyRow.createCell(j).apply {
+                bodyRow.createCell(j).apply {
                     setCellValue(data)
                     cellStyle = bodyCellStyle
                 }
